@@ -22,6 +22,15 @@ func main() {
 	router := gin.Default()
 	router.LoadHTMLGlob("templates/*.html")
 
+	initdb()
+
+	router.GET("/", rootPath)
+	router.GET("/search", searchPath)
+
+	router.Run()
+}
+
+func initdb() {
 	db, err := gorm.Open("sqlite3", "test.db")
 	if err != nil {
 		panic("Not Found Database.")
@@ -34,11 +43,6 @@ func main() {
 	db.Create(&Product{Code: "L0003", Name: "Banana", Price: 2000})
 	db.Create(&Product{Code: "L0004", Name: "Papaya", Price: 5000})
 	db.Create(&Product{Code: "L0005", Name: "Mango", Price: 3000})
-
-	router.GET("/", rootPath)
-	router.GET("/search", searchPath)
-
-	router.Run()
 }
 
 func rootPath(c *gin.Context) {
