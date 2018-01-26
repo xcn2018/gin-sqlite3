@@ -11,7 +11,6 @@ import (
 )
 
 type Product struct {
-	//gorm.Model: ID, udpated_at, craeted_at, deleted_at, etc...
 	gorm.Model
 	Code  string
 	Name  string
@@ -22,27 +21,10 @@ func main() {
 	router := gin.Default()
 	router.LoadHTMLGlob("templates/*.html")
 
-	initdb()
-
 	router.GET("/", rootPath)
 	router.GET("/search", searchPath)
 
 	router.Run()
-}
-
-func initdb() {
-	db, err := gorm.Open("sqlite3", "test.db")
-	if err != nil {
-		panic("Not Found Database.")
-	}
-
-	db.AutoMigrate(&Product{})
-
-	db.Create(&Product{Code: "L0001", Name: "Apple", Price: 1000})
-	db.Create(&Product{Code: "L0002", Name: "Orange", Price: 100})
-	db.Create(&Product{Code: "L0003", Name: "Banana", Price: 2000})
-	db.Create(&Product{Code: "L0004", Name: "Papaya", Price: 5000})
-	db.Create(&Product{Code: "L0005", Name: "Mango", Price: 3000})
 }
 
 func rootPath(c *gin.Context) {
